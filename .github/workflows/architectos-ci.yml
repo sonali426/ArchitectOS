@@ -1,0 +1,25 @@
+name: ArchitectOS CI
+on:
+  push:
+    paths:
+      - 'architectos/**'
+      - '.github/workflows/architectos-*.yml'
+  pull_request:
+    paths:
+      - 'architectos/**'
+      - '.github/workflows/architectos-*.yml'
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: architectos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run validate:content
+      - run: npm run build

@@ -1,0 +1,31 @@
+{
+  "name": "architectos-learning-product",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/merge-topics.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/merge-topics.mjs",
+    "build": "tsc -b && vite build",
+    "prepreview": "node scripts/merge-topics.mjs",
+    "preview": "vite preview",
+    "prevalidate:content": "node scripts/merge-topics.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "prefreshness": "node scripts/merge-topics.mjs",
+    "freshness": "node scripts/resource-health.mjs",
+    "check": "npm run validate:content && npm run build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "0.468.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}
