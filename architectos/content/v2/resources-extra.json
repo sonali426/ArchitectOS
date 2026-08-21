@@ -1,0 +1,22 @@
+[
+  {"id":"mongodb","title":"MongoDB Documentation","url":"https://www.mongodb.com/docs/","kind":"Official","role":"document database","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"cassandra","title":"Apache Cassandra Architecture","url":"https://cassandra.apache.org/doc/latest/cassandra/architecture/overview.html","kind":"Official","role":"wide-column/distributed storage","lastVerified":"2026-08-21","refreshEveryDays":60},
+  {"id":"dynamodb","title":"Amazon DynamoDB Developer Guide","url":"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html","kind":"Official","role":"key-value/document production design","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"neo4j","title":"Neo4j Graph Database Concepts","url":"https://neo4j.com/docs/getting-started/appendix/graphdb-concepts/","kind":"Official","role":"graph database","lastVerified":"2026-08-21","refreshEveryDays":60},
+  {"id":"s3","title":"Amazon S3 User Guide","url":"https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html","kind":"Official","role":"object storage","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"timescale","title":"Timescale Documentation","url":"https://docs.timescale.com/","kind":"Official","role":"time-series concepts","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"flyway","title":"Flyway Documentation","url":"https://documentation.red-gate.com/flyway","kind":"Official","role":"schema migration","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"quartz","title":"Quartz Scheduler Documentation","url":"https://www.quartz-scheduler.org/documentation/","kind":"Official","role":"job scheduling","lastVerified":"2026-08-21","refreshEveryDays":60},
+  {"id":"prometheus","title":"Prometheus Documentation","url":"https://prometheus.io/docs/introduction/overview/","kind":"Official","role":"metrics","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"opensearch","title":"OpenSearch Documentation","url":"https://docs.opensearch.org/latest/","kind":"Official","role":"search systems","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"openfeature","title":"OpenFeature","url":"https://openfeature.dev/","kind":"Standard","role":"feature flags","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"backstage","title":"Backstage Documentation","url":"https://backstage.io/docs/","kind":"Official","role":"developer portal/platform engineering","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"kafka-streams","title":"Kafka Streams Documentation","url":"https://kafka.apache.org/documentation/streams/","kind":"Official","role":"stream processing","lastVerified":"2026-08-21","refreshEveryDays":30},
+  {"id":"opensearch-vector","title":"OpenSearch Vector Search","url":"https://docs.opensearch.org/latest/vector-search/","kind":"Official","role":"vector retrieval","lastVerified":"2026-08-21","refreshEveryDays":30},
+  {"id":"webauthn","title":"W3C Web Authentication (WebAuthn)","url":"https://www.w3.org/TR/webauthn-3/","kind":"Standard","role":"passkeys/authentication","lastVerified":"2026-08-21","refreshEveryDays":90},
+  {"id":"spiffe","title":"SPIFFE Documentation","url":"https://spiffe.io/docs/latest/","kind":"Standard/project","role":"workload identity","lastVerified":"2026-08-21","refreshEveryDays":60},
+  {"id":"sigstore","title":"Sigstore Documentation","url":"https://docs.sigstore.dev/","kind":"Official","role":"software supply chain","lastVerified":"2026-08-21","refreshEveryDays":60},
+  {"id":"envoy","title":"Envoy Architecture Overview","url":"https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview","kind":"Official","role":"proxy/service mesh","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"istio","title":"Istio Documentation","url":"https://istio.io/latest/docs/","kind":"Official","role":"service mesh","lastVerified":"2026-08-21","refreshEveryDays":45},
+  {"id":"cncf","title":"CNCF Cloud Native Landscape","url":"https://landscape.cncf.io/","kind":"Landscape","role":"ecosystem drift baseline","lastVerified":"2026-08-21","refreshEveryDays":30}
+]
