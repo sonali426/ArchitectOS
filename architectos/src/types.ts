@@ -22,20 +22,16 @@ export type V2Catalog = {
   generatedAt: string;
   domains: V2Domain[];
   resources: V2Resource[];
-  stats: {
-    domains: number; modules: number; units: number; resources: number;
-    designLabs: number; architectUnits: number; legacyTopics: number; legacyMapped: number;
-  };
+  stats: { domains:number; modules:number; units:number; resources:number; designLabs:number; architectUnits:number; legacyTopics:number; legacyMapped:number };
   unmappedLegacy: string[];
 };
 
-export type Blog = {
-  name: string; url: string; focus: string[]; signal: string;
-  refreshEveryDays: number; lastVerified: string;
-};
+export type Blog = { name:string; url:string; focus:string[]; signal:string; refreshEveryDays:number; lastVerified:string };
+export type MasteryModes = { understand:boolean; implement:boolean; breakIt:boolean; measure:boolean; explain:boolean };
+export type UnitProgress = { modes:MasteryModes; evidence:string; notes:string };
 
-export type MasteryModes = {
-  understand: boolean; implement: boolean; breakIt: boolean; measure: boolean; explain: boolean;
-};
-
-export type UnitProgress = { modes: MasteryModes; evidence: string; notes: string };
+// Legacy V1 shapes are retained while maintenance scripts and historical content coexist with V2.
+export type Resource = { title:string; url:string; kind:string; note:string; lastVerified:string };
+export type Topic = { id:string; stage:number; track:string; title:string; summary:string; why:string; level:string; prerequisites:string[]; outcomes:string[]; concepts:string[]; resources:Resource[]; lab:string; refreshEveryDays:number; volatility:string; lastVerified:string };
+export type CapstonePhase = { stage:number; title:string; deliverable:string; items:string[] };
+export type Capstone = { title:string; description:string; phases:CapstonePhase[] };
