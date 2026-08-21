@@ -1,0 +1,16 @@
+import { ArrowRight, BrainCircuit, Sparkles } from 'lucide-react';
+import type { LearningUnit, V2Domain, V2Module } from '../types';
+import { allUnits, catalog, depthLabel, pct } from './data';
+
+type Progress={isComplete:(id:string)=>boolean};
+export default function Home({progress,openUnit,go}:{progress:Progress;openUnit:(d:V2Domain,m:V2Module,u:LearningUnit)=>void;go:(v:'curriculum'|'design')=>void}){
+  const completed=allUnits.filter(x=>progress.isComplete(x.unit.id)).length;
+  const next=allUnits.find(x=>!progress.isComplete(x.unit.id))||allUnits[0];
+  return <>
+    <section className="v2-hero"><div><span className="v2-kicker"><Sparkles size={14}/> EVIDENCE-BASED MASTERY</span><h1>Become an elite <em>software engineer</em> and a high-judgment <em>product architect.</em></h1><p>V2 replaces broad checklist topics with individually masterable units, deep system-design practice, and proof across understand → implement → break → measure → explain.</p><div className="v2-actions"><button className="v2-btn primary" onClick={()=>openUnit(next.domain,next.module,next.unit)}>Continue: {next.unit.title}<ArrowRight size={15}/></button><button className="v2-btn" onClick={()=>go('curriculum')}>Explore curriculum</button></div></div><div className="v2-stat-grid"><Stat n={catalog.stats.units} t="learning units"/><Stat n={catalog.stats.architectUnits} t="architect-depth"/><Stat n={catalog.stats.designLabs} t="design labs"/><Stat n={catalog.stats.resources} t="curated resources"/></div></section>
+    <div className="v2-two"><section className="v2-card"><div className="v2-card-head"><span className="eyebrow">NEXT UNIT</span><span className={`v2-depth ${next.unit.depth}`}>{depthLabel[next.unit.depth]}</span></div><h2>{next.unit.title}</h2><p>{next.unit.summary}</p><div className="v2-chips">{next.unit.concepts.slice(0,7).map(c=><span key={c}>{c}</span>)}</div><small>{next.domain.title} → {next.module.title}</small><button className="v2-btn compact" onClick={()=>openUnit(next.domain,next.module,next.unit)}>Open learning unit <ArrowRight size={14}/></button></section>
+      <section className="v2-card"><span className="eyebrow">MASTERY CONTRACT</span><h2><BrainCircuit size={21}/> A checkbox is not mastery.</h2><div className="v2-loop">{['Understand','Implement','Break','Measure','Explain'].map((x,i)=><div key={x}><b>0{i+1}</b><span>{x}</span></div>)}</div><p>Every unit only completes after all five modes plus concrete evidence: code, design doc, benchmark, trace, incident drill, query plan, threat model, or another durable artifact.</p></section></div>
+    <section className="v2-section"><div className="v2-section-head"><div><span className="eyebrow">COMPETENCY GRAPH</span><h2>{catalog.stats.domains} domains, sequenced for depth</h2></div><strong>{pct(completed,catalog.stats.units)}% mastered</strong></div><div className="v2-domain-strip">{catalog.domains.map(d=><button key={d.id} onClick={()=>go(d.id==='system-design'?'design':'curriculum')}><b>{String(d.order).padStart(2,'0')}</b><span>{d.title}</span><small>{d.modules.length} modules · {d.modules.reduce((n,m)=>n+m.units.length,0)} units</small></button>)}</div></section>
+  </>;
+}
+function Stat({n,t}:{n:number;t:string}){return <div><strong>{n}</strong><span>{t}</span></div>}

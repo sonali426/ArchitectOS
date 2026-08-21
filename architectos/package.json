@@ -1,19 +1,19 @@
 {
   "name": "architectos-learning-product",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/merge-topics.mjs",
+    "v2:catalog": "node scripts/build-v2-catalog.mjs",
+    "predev": "node scripts/build-v2-catalog.mjs && node scripts/merge-topics.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/merge-topics.mjs",
+    "prebuild": "node scripts/build-v2-catalog.mjs && node scripts/merge-topics.mjs",
     "build": "tsc -b && vite build",
-    "prepreview": "node scripts/merge-topics.mjs",
+    "prepreview": "node scripts/build-v2-catalog.mjs && node scripts/merge-topics.mjs",
     "preview": "vite preview",
-    "prevalidate:content": "node scripts/merge-topics.mjs",
-    "validate:content": "node scripts/validate-content.mjs",
-    "prefreshness": "node scripts/merge-topics.mjs",
-    "freshness": "node scripts/resource-health.mjs",
+    "prevalidate:content": "node scripts/build-v2-catalog.mjs && node scripts/merge-topics.mjs",
+    "validate:content": "node scripts/validate-content.mjs && node scripts/build-v2-catalog.mjs",
+    "freshness": "node scripts/v2-maintenance.mjs --mode=all",
     "check": "npm run validate:content && npm run build"
   },
   "dependencies": {
