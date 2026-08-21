@@ -1,11 +1,9 @@
 name: ArchitectOS Pages
+
 on:
-  workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - 'architectos/**'
-      - '.github/workflows/architectos-pages.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -17,24 +15,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install --no-audit --no-fund
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
         working-directory: architectos
-      - run: npm run build
+
+      - name: Validate curriculum content
+        run: npm run validate:content
         working-directory: architectos
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Build production site
+        run: npm run build
+        working-directory: architectos
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: architectos/dist
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
