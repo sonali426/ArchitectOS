@@ -1,55 +1,47 @@
-name: ArchitectOS Resource Health
+name: ArchitectOS V2 Maintenance
 on:
   schedule:
     - cron: '17 3 * * 1'
   workflow_dispatch:
-    inputs:
-      topic:
-        description: 'Optional topic id to audit (example: kafka-streaming)'
-        required: false
-        type: string
 
 permissions:
   contents: read
   issues: write
 
 jobs:
-  freshness:
+  maintenance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Assemble curriculum
-        run: node architectos/scripts/merge-topics.mjs
-      - id: scan
+      - name: Build and validate V2 catalog
+        working-directory: architectos
+        run: node scripts/build-v2-catalog.mjs
+      - id: resources
+        name: Scan resource health
+        working-directory: architectos
         shell: bash
-        run: |
-          TOPIC="${{ inputs.topic }}"
-          if [ -n "$TOPIC" ]; then
-            node architectos/scripts/resource-health.mjs --topic="$TOPIC" > /tmp/architectos-health.md
-          else
-            node architectos/scripts/resource-health.mjs > /tmp/architectos-health.md
-          fi
-          cat /tmp/architectos-health.md
-      - name: Create or update freshness issue
-        if: ${{ steps.scan.outputs.count != '0' }}
+        run: node scripts/v2-maintenance.mjs --mode=resources | tee /tmp/resources.md
+      - id: curriculum
+        name: Scan curriculum drift
+        working-directory: architectos
+        shell: bash
+        run: node scripts/v2-maintenance.mjs --mode=curriculum | tee /tmp/curriculum.md
+      - name: Create or update maintenance issues
+        if: ${{ steps.resources.outputs.count != '0' || steps.curriculum.outputs.count != '0' }}
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const body = fs.readFileSync('/tmp/architectos-health.md', 'utf8');
-            const title = '[ArchitectOS] Resource freshness queue';
-            const { data: issues } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              per_page: 100
-            });
-            const existing = issues.find(i => !i.pull_request && i.title === title);
-            if (existing) {
-              await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body });
-            } else {
-              await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body });
+            async function upsert(title, file, enabled) {
+              if (!enabled) return;
+              const body = fs.readFileSync(file, 'utf8');
+              const { data: issues } = await github.rest.issues.listForRepo({owner:context.repo.owner,repo:context.repo.repo,state:'open',per_page:100});
+              const existing = issues.find(i => !i.pull_request && i.title === title);
+              if (existing) await github.rest.issues.update({owner:context.repo.owner,repo:context.repo.repo,issue_number:existing.number,body});
+              else await github.rest.issues.create({owner:context.repo.owner,repo:context.repo.repo,title,body});
             }
+            await upsert('[ArchitectOS V2] Resource health queue','/tmp/resources.md','${{ steps.resources.outputs.count }}' !== '0');
+            await upsert('[ArchitectOS V2] Curriculum drift queue','/tmp/curriculum.md','${{ steps.curriculum.outputs.count }}' !== '0');
