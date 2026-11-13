@@ -36,7 +36,7 @@ const phases:Phase[]=[
  ]}
 ];
 
-export default function Journey({progress,openModule,openUnit}:{progress:Progress;openModule:(d:V2Domain,m:V2Module)=>void;openUnit:(d:V2Domain,m:V2Module,u:LearningUnit)=>void;goCurriculum:()=>void}){
+export default function Journey({progress,openModule,openUnit,goCurriculum}:{progress:Progress;openModule:(d:V2Domain,m:V2Module)=>void;openUnit:(d:V2Domain,m:V2Module,u:LearningUnit)=>void;goCurriculum:()=>void}){
  const routed=phases.map(phase=>({...phase,modules:phase.groups.flatMap(g=>{const domain=catalog.domains.find(d=>d.order===g.domainOrder);return domain?g.moduleIds.map(id=>({domain,module:domain.modules.find(m=>m.id===id)})).filter(x=>!!x.module) as {domain:V2Domain;module:V2Module}[]:[]})}));
  const units=routed.flatMap(p=>p.modules.flatMap(x=>x.module.units.map(unit=>({...x,unit}))));
  const done=units.filter(x=>progress.isComplete(x.unit.id)).length;
